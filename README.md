@@ -9,7 +9,7 @@
 
 ## ❓ Why? ❓
 I used to use Spring on Java and loved how productive I was able to be. Ever since moving back to C#, I have always felt like C# is great, but it could be even better.
-Well, if Spring is gone, all we can do is welcome Summer hoping it will also be great. 
+Well, if Spring is gone, all we can do is welcome Summer!
 
 ## 🚀 Goals 🚀
 The initial goal is to make a C# Framework that has:
