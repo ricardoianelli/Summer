@@ -14,8 +14,8 @@ Well, if Spring is gone, all we can do is welcome Summer!
 ## 🚀 Goals 🚀
 The initial goal is to make a C# Framework that has:
 
-- Dependency Injection with attributes. (Example: [Inject])
-- Async Events in a Publish/Subscribe pattern using attributes.
+- Dependency Injection using attributes. (Example: [Inject])
+- Async Events in a Publish/Subscribe pattern.
 - Something close to AOP, enabling cross-cutting concerns to be defined out of your business logic. (Ex.: Logs, Exception Handling, Metrics, etc)
 - Have a ready-to-go dashboard/control panel where you can see metrics, query logs, create alerts, etc.
 - Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc)
