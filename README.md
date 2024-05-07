@@ -21,7 +21,7 @@ The initial goal is to make a C# Framework that has:
 - Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc)
 - New stuff suggested by you to make our lives easier.
 
-## 🚀 Disclamer 🚀
+## ✏ Disclamer ✏
 I don't mean to create a super high-quality project working now and then after an exhausting day at work, alone. So, in the beginning, I'm not really concerned about security or performance, I'll worry about those things once I get something worth securing and the performance is bad.
 
 
