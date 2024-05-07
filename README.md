@@ -1,5 +1,5 @@
 <h1 align="center">
-    ☁️🚀 Summer 🚀☁️
+    ☀🌊 Summer 🌊☀
 </h1>
 
 <h4 align="center">
