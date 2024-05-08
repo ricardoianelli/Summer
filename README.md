@@ -7,7 +7,7 @@
 </h4>
 
 <p align="center" width="100%">
-    <img width="10%" src="https://github.com/ricardoianelli/Summer/actions/workflows/dotnet.yml/badge.svg?event=push">
+    <img width="10%" src="https://github.com/ricardoianelli/Summer/actions/workflows/dotnet.yml/badge.svg">
 </p>
 
 ## ❓ Why? ❓
