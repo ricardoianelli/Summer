@@ -1,4 +1,4 @@
-﻿namespace Summer.DependencyInjection;
+﻿namespace Summer.DependencyInjection.Interfaces;
 
 /// <summary>
 /// Defines a class that needs to be instantiated and be stored as a Singleton in the ComponentStore.
