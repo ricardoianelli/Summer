@@ -6,6 +6,9 @@
    For those who loved Spring, here's what comes next.
 </h4>
 
+<p align="center" width="100%">
+    <img width="10%" src="https://github.com/ricardoianelli/Summer/actions/workflows/dotnet.yml/badge.svg">
+</p>
 
 ## ❓ Why? ❓
 I used to use Spring on Java and loved how productive I was able to be. Ever since moving back to C#, I have always felt like C# is great, but it could be even better.
