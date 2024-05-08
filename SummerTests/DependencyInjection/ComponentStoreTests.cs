@@ -1,10 +1,15 @@
-﻿namespace SummerTests.DependencyInjection;
+﻿using FluentAssertions;
+using Summer.DependencyInjection;
+
+namespace SummerTests.DependencyInjection;
 
 public class ComponentStoreTests
 {
     [Fact]
     public void GenericFind_GivenAValidComponent_ShouldReturnSingleton()
     {
+        var componentStore = new ComponentStore();
+        componentStore.Find<ExampleComponent>().Should().BeOfType<ExampleComponent>();
     }
     
     [Fact]
