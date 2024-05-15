@@ -17,7 +17,9 @@ public class ComponentStoreTests
     {
         var componentStore = new ComponentStore();
         componentStore.Register<ExampleComponent>();
-        componentStore.Find<ExampleComponent>().Should().BeOfType<ExampleComponent>();
+        
+        var component = componentStore.Find<ExampleComponent>();
+        component.Should().BeOfType<ExampleComponent>();
     }
     
     [Fact]

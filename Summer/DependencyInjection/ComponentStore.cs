@@ -4,9 +4,14 @@ namespace Summer.DependencyInjection;
 
 public class ComponentStore : IComponentStore
 {
+    private readonly IDictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
+    
     public T? Find<T>() where T : class, IComponent
     {
-        throw new NotImplementedException();
+        if (!_components.ContainsKey(typeof(T))) 
+            return null;
+        
+        return _components[typeof(T)] as T;
     }
 
     public object? Find(Type type)
@@ -16,7 +21,10 @@ public class ComponentStore : IComponentStore
 
     public void Register<T>() where T : class, IComponent, new()
     {
-        throw new NotImplementedException();
+        if (_components.ContainsKey(typeof(T))) 
+            return;
+        
+        _components.Add(typeof(T), new T());
     }
 
     public void Register(Type type)

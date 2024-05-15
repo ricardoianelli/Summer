@@ -4,5 +4,4 @@ namespace Summer.DependencyInjection;
 
 public class ExampleComponent : IComponent
 {
-    
 }
