@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Summer.DependencyInjection;
+using Summer.DependencyInjection.Exceptions;
 
 namespace SummerTests.DependencyInjection;
 
@@ -47,60 +48,55 @@ public class ComponentStoreTests
     [Fact]
     public void GenericRegister_GivenAValidComponent_ShouldNotThrow()
     {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        AssertExtensions.DoesNotThrow(() => componentStore.Register<ExampleComponent>());
     }
     
     [Fact] //TODO: Still in doubt about the behavior I want in this case.
     public void GenericRegister_GivenAValidComponentThatAlreadyExists_ShouldNotThrow()
     {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        componentStore.Register<ExampleComponent>();
+        AssertExtensions.DoesNotThrow(() => componentStore.Register<ExampleComponent>());
     }
     
     [Fact]
     public void GenericRegister_GivenAValidComponent_ShouldBeAbleToRetrieveItAfterwards()
     {
-        Assert.Fail("Not Implemented");
-    }
-    
-    [Fact]
-    public void GenericRegister_GivenAnInvalidComponent_ShouldThrow()
-    {
-        Assert.Fail("Not Implemented");
-    }
-    
-    [Fact]
-    public void GenericRegister_GivenAnInvalidComponent_ShouldGetNullWhenRetrievingItAfterwards()
-    {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        componentStore.Register<ExampleComponent>();
+        
+        var component = componentStore.Find<ExampleComponent>();
+        component.Should().BeOfType<ExampleComponent>();
     }
     
     [Fact]
     public void Register_GivenAValidComponent_ShouldNotThrow()
     {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        AssertExtensions.DoesNotThrow(() => componentStore.Register(typeof(ExampleComponent)));
     }
     
     [Fact] //TODO: Still in doubt about the behavior I want in this case.
     public void Register_GivenAValidComponentThatAlreadyExists_ShouldNotThrow()
     {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        componentStore.Register(typeof(ExampleComponent));
+        AssertExtensions.DoesNotThrow(() => componentStore.Register(typeof(ExampleComponent)));
     }
     
     [Fact]
     public void Register_GivenAValidComponent_ShouldBeAbleToRetrieveItAfterwards()
     {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        componentStore.Register(typeof(ExampleComponent));
+        componentStore.Find(typeof(ExampleComponent)).Should().BeOfType<ExampleComponent>();
     }
     
     [Fact]
     public void Register_GivenAnInvalidComponent_ShouldThrow()
     {
-        Assert.Fail("Not Implemented");
-    }
-    
-    [Fact]
-    public void Register_GivenAnInvalidComponent_ShouldGetNullWhenRetrievingItAfterwards()
-    {
-        Assert.Fail("Not Implemented");
+        var componentStore = new ComponentStore();
+        Assert.Throws<NotAValidComponentException>(() => componentStore.Register(typeof(String)));
     }
 }
