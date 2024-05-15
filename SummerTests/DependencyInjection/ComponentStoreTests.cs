@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Text;
+using FluentAssertions;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Exceptions;
+using Summer.DependencyInjection.Interfaces;
 
 namespace SummerTests.DependencyInjection;
 
@@ -18,18 +20,18 @@ public class ComponentStoreTests
     {
         var componentStore = new ComponentStore();
         componentStore.Register<ExampleComponent>();
-        
+
         var component = componentStore.Find<ExampleComponent>();
         component.Should().BeOfType<ExampleComponent>();
     }
-    
+
     [Fact]
     public void GenericFind_GivenAnInvalidComponent_ShouldReturnNull()
     {
         var componentStore = new ComponentStore();
         componentStore.Find<ExampleComponent>().Should().BeNull();
     }
-    
+
     [Fact]
     public void Find_GivenAPreviouslyAddedComponent_ShouldReturnComponent()
     {
@@ -37,21 +39,21 @@ public class ComponentStoreTests
         componentStore.Register(typeof(ExampleComponent));
         componentStore.Find(typeof(ExampleComponent)).Should().BeOfType<ExampleComponent>();
     }
-    
+
     [Fact]
     public void Find_GivenAnInvalidComponent_ShouldReturnNull()
     {
         var componentStore = new ComponentStore();
         componentStore.Find(typeof(ExampleComponent)).Should().BeNull();
     }
-    
+
     [Fact]
     public void GenericRegister_GivenAValidComponent_ShouldNotThrow()
     {
         var componentStore = new ComponentStore();
         AssertExtensions.DoesNotThrow(() => componentStore.Register<ExampleComponent>());
     }
-    
+
     [Fact] //TODO: Still in doubt about the behavior I want in this case.
     public void GenericRegister_GivenAValidComponentThatAlreadyExists_ShouldNotThrow()
     {
@@ -59,24 +61,24 @@ public class ComponentStoreTests
         componentStore.Register<ExampleComponent>();
         AssertExtensions.DoesNotThrow(() => componentStore.Register<ExampleComponent>());
     }
-    
+
     [Fact]
     public void GenericRegister_GivenAValidComponent_ShouldBeAbleToRetrieveItAfterwards()
     {
         var componentStore = new ComponentStore();
         componentStore.Register<ExampleComponent>();
-        
+
         var component = componentStore.Find<ExampleComponent>();
         component.Should().BeOfType<ExampleComponent>();
     }
-    
+
     [Fact]
     public void Register_GivenAValidComponent_ShouldNotThrow()
     {
         var componentStore = new ComponentStore();
         AssertExtensions.DoesNotThrow(() => componentStore.Register(typeof(ExampleComponent)));
     }
-    
+
     [Fact] //TODO: Still in doubt about the behavior I want in this case.
     public void Register_GivenAValidComponentThatAlreadyExists_ShouldNotThrow()
     {
@@ -84,7 +86,7 @@ public class ComponentStoreTests
         componentStore.Register(typeof(ExampleComponent));
         AssertExtensions.DoesNotThrow(() => componentStore.Register(typeof(ExampleComponent)));
     }
-    
+
     [Fact]
     public void Register_GivenAValidComponent_ShouldBeAbleToRetrieveItAfterwards()
     {
@@ -92,11 +94,30 @@ public class ComponentStoreTests
         componentStore.Register(typeof(ExampleComponent));
         componentStore.Find(typeof(ExampleComponent)).Should().BeOfType<ExampleComponent>();
     }
-    
+
     [Fact]
     public void Register_GivenAnInvalidComponent_ShouldThrow()
     {
         var componentStore = new ComponentStore();
-        Assert.Throws<NotAValidComponentException>(() => componentStore.Register(typeof(String)));
+        Assert.Throws<NotAValidComponentException>(() => componentStore.Register(typeof(StringBuilder)));
+    }
+
+    [Fact]
+    public void Register_GivenAComponentWithoutAnEmptyConstructor_ShouldThrow()
+    {
+        var componentStore = new ComponentStore();
+        Assert.Throws<NotAValidComponentException>(() => componentStore.Register(typeof(ComponentWithoutEmptyConstructor)));
+    }
+
+    private class ComponentWithoutEmptyConstructor : IComponent
+    {
+        public ComponentWithoutEmptyConstructor(string param)
+        {
+            
+        }
+    }
+    
+    private class ExampleComponent : IComponent
+    {
     }
 }
