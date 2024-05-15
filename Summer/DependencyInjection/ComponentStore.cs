@@ -4,7 +4,7 @@ namespace Summer.DependencyInjection;
 
 public class ComponentStore : IComponentStore
 {
-    private readonly IDictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
+    private readonly IDictionary<Type, object> _components = new Dictionary<Type, object>();
     
     public T? Find<T>() where T : class, IComponent
     {
@@ -16,7 +16,11 @@ public class ComponentStore : IComponentStore
 
     public object? Find(Type type)
     {
-        throw new NotImplementedException();
+        // I could simplify this with TryGetValue, but I want to make it easier for people who are still learning so they feel empowered.
+        if (!_components.ContainsKey(type)) 
+            return null;
+        
+        return _components[type];
     }
 
     public void Register<T>() where T : class, IComponent, new()
@@ -29,6 +33,15 @@ public class ComponentStore : IComponentStore
 
     public void Register(Type type)
     {
-        throw new NotImplementedException();
+        if (_components.ContainsKey(type)) 
+            return;
+        
+        var instance = Activator.CreateInstance(type);
+        if (instance is null)
+        {
+            throw new Exception($"There was an error creating an instance of {type}.");
+        }
+        
+        _components.Add(type, instance);
     }
 }
