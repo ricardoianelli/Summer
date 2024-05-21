@@ -125,5 +125,15 @@ public static class ComponentsEngine
 
     private static void Initialize(List<Type> componentTypes)
     {
+        foreach (var componentType in componentTypes)
+        {
+            if (ComponentStore.Find(componentType) is not IComponent component)
+            {
+                Console.WriteLine($"Couldn't find component of type {componentType}.");
+                continue;
+            }
+
+            component.Initialize();
+        }
     }
 }
