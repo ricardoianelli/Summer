@@ -17,12 +17,13 @@ Well, if Spring is gone, all we can do is welcome Summer!
 ## 🚀 Goals 🚀
 The initial goal is to make a C# Framework that has:
 
-- Dependency Injection using attributes. (Example: [Inject])
-- Async Events in a Publish/Subscribe pattern.
-- Something close to AOP, enabling cross-cutting concerns to be defined out of your business logic. (Ex.: Logs, Exception Handling, Metrics, etc)
-- Have a ready-to-go dashboard/control panel where you can see metrics, query logs, create alerts, etc.
-- Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc)
-- New stuff suggested by you to make our lives easier.
+- [x] Dependency Injection using attributes. (Example: [Inject]) **(Done! Check it out [HERE](docs/DI.md))**
+- [ ] Async Events in a Publish/Subscribe pattern.
+- [ ] Something close to AOP, enabling cross-cutting concerns to be defined out of your business logic. (Ex.: Logs, Exception Handling, Metrics, etc)
+- [ ] Have a ready-to-go dashboard/control panel where you can see metrics, query logs, create alerts, etc.
+- [ ] Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc).
+      
+**+ New stuff suggested by you to make our lives easier!**
 
 ## ✏ Disclamer ✏
 I don't mean to create a super high-quality project working now and then after an exhausting day at work, alone. So, in the beginning, I'm not really concerned about security or performance, I'll worry about those things once I get something worth securing and the performance is bad.
