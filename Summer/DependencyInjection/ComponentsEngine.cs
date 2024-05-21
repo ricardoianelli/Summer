@@ -21,6 +21,8 @@ public static class ComponentsEngine
         
         InjectDependencies(componentTypes);
         Initialize(componentTypes);
+        
+        Console.WriteLine($"ComponentsEngine started successfully!");
     }
 
     public static T? GetComponent<T>() where T : class, IComponent
