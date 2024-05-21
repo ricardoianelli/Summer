@@ -44,4 +44,5 @@ As long as we grow together, this project is already a win.
 - [ ] Alerts
 
 #### Enhancements:
+- [ ] Support to .Net Framework (For people using Unity Engine and Legacy Apps)
 - [ ] HttpClient extension methods supporting timeout
