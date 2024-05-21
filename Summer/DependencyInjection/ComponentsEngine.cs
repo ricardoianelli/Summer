@@ -15,7 +15,10 @@ public static class ComponentsEngine
     public static void Start()
     {
         Console.WriteLine($"Starting ComponentsEngine.");
+        
         var componentTypes = Discover();
+        if (componentTypes.Count == 0) return;
+        
         InjectDependencies(componentTypes);
         Initialize(componentTypes);
     }
