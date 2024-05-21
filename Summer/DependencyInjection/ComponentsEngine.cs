@@ -1,4 +1,5 @@
-﻿using Summer.DependencyInjection.Interfaces;
+﻿using System.Reflection;
+using Summer.DependencyInjection.Interfaces;
 
 namespace Summer.DependencyInjection;
 
@@ -11,6 +12,7 @@ public static class ComponentsEngine
     /// </summary>
     public static void Start()
     {
+        Console.WriteLine($"Starting ComponentsEngine.");
         var componentTypes = Discover();
         InjectDependencies(componentTypes);
         Initialize(componentTypes);
@@ -29,7 +31,20 @@ public static class ComponentsEngine
 
     private static List<Type> Discover()
     {
-        return new List<Type>();
+        Console.WriteLine($"Discovering Components...");
+        var assembly = Assembly.GetExecutingAssembly();
+        
+        var componentTypes = assembly.GetTypes()
+            .Where(t => t.GetInterfaces().Contains(typeof(IComponent)) && !t.IsAbstract)
+            .ToList();
+        
+        foreach (var componentType in componentTypes)
+        {
+            ComponentStore.Register(componentType);
+            Console.WriteLine($"Registered Component of type {componentType.Name}");
+        }
+        
+        return componentTypes;
     }
 
     private static void InjectDependencies(List<Type> componentTypes)
