@@ -17,7 +17,7 @@ public class ComponentStore : IComponentStore
 
     public object? Find(Type type)
     {
-        // I could simplify this with TryGetValue, but I want to make it easier for people who are still learning so they feel empowered.
+        // I could simplify this with TryGetValue, but I want to make it easier for people who are still learning so they can follow easier.
         if (!_components.ContainsKey(type)) 
             return null;
         

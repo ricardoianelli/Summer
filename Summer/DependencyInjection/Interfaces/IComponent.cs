@@ -5,5 +5,8 @@
 /// </summary>
 public interface IComponent
 {
-    
+    /// <summary>
+    /// Method used to do any object initialization after all dependencies were injected.
+    /// </summary>
+    void Initialize();
 }

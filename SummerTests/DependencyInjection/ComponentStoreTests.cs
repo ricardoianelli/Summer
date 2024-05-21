@@ -115,9 +115,16 @@ public class ComponentStoreTests
         {
             
         }
+
+        public void Initialize()
+        {
+        }
     }
     
     private class ExampleComponent : IComponent
     {
+        public void Initialize()
+        {
+        }
     }
 }
