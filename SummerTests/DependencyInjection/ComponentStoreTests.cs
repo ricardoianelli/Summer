@@ -117,17 +117,10 @@ public class ComponentStoreTests
         {
             
         }
-
-        public void Initialize()
-        {
-        }
     }
     
     [IgnoreComponent]
     private class ExampleComponent : IComponent
     {
-        public void Initialize()
-        {
-        }
     }
 }

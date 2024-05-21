@@ -57,17 +57,11 @@ public class ComponentsEngineTest
     {
         [Inject]
         public Component2 Component2;
-
-        public void Initialize()
-        {
-        }
+        
     }
     
     private class Component2 : IComponent
     {
-        public void Initialize()
-        {
-        }
     }
     
     private class Component3 : IComponent
@@ -76,37 +70,22 @@ public class ComponentsEngineTest
         private Component1 _component1;
 
         public Component1 GetComponent1() => _component1;
-
-        public void Initialize()
-        {
-        }
     }
     
     private class Component4 : IComponent
     {
         [Inject]
         public Component2 Component2 { get; }
-
-        public void Initialize()
-        {
-        }
     }
     
     private class Component5 : IComponent
     {
         [Inject]
         public Component6 Component6 { get; }
-
-        public void Initialize()
-        {
-        }
     }
     
     [IgnoreComponent]
     private class Component6 : IComponent
     {
-        public void Initialize()
-        {
-        }
     }
 }
