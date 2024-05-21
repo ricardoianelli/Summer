@@ -17,11 +17,11 @@ Well, if Spring is gone, all we can do is welcome Summer!
 ## 🚀 Goals 🚀
 The initial goal is to make a C# Framework that has:
 
-- [x] Dependency Injection using attributes. (Example: [Inject]) **(Done! Check it out [HERE](docs/DI.md))**
-- [ ] Async Events in a Publish/Subscribe pattern.
-- [ ] Something close to AOP, enabling cross-cutting concerns to be defined out of your business logic. (Ex.: Logs, Exception Handling, Metrics, etc)
-- [ ] Have a ready-to-go dashboard/control panel where you can see metrics, query logs, create alerts, etc.
-- [ ] Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc).
+- Dependency Injection using attributes.
+- Async Events in a Publish/Subscribe pattern.
+- Something close to AOP, enabling cross-cutting concerns to be defined out of your business logic. (Ex.: Logs, Exception Handling, Metrics, etc)
+- Have a ready-to-go dashboard/control panel where you can see metrics, query logs, create alerts, etc.
+- Extension methods to make our lives easier. (HttpClient.PostAsync with timeout, etc).
       
 **+ New stuff suggested by you to make our lives easier!**
 
@@ -33,3 +33,15 @@ This is supposed to be a fun project where I can work and hopefully learn more a
 So please, if you see something that could be improved or feel like something is not easy to understand, open an issue, and let's talk about it. 
 
 As long as we grow together, this project is already a win.
+
+## 🚧 Progress 🚧
+#### Core:
+- [x] Dependency Injection using attributes. (Example: [Inject]) **(Done! Check it out [HERE](docs/DI.md))**
+- [ ] Async Events in a Publish/Subscribe pattern.
+- [ ] Aspect-Oriented Programming
+- [ ] Metrics Dashboard
+- [ ] Logs Dashboard
+- [ ] Alerts
+
+#### Enhancements:
+- [ ] HttpClient extension methods supporting timeout
