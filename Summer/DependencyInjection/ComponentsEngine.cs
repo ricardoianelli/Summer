@@ -6,23 +6,40 @@ namespace Summer.DependencyInjection;
 
 public static class ComponentsEngine
 {
-    private static readonly ComponentStore ComponentStore = new();
     public static Assembly ExecutingAssembly { get; set; } = Assembly.GetExecutingAssembly();
+
+    private static readonly ComponentStore ComponentStore = new();
+    private static DateTime _startTime;
 
     /// <summary>
     /// Discover and initialize Components.
     /// </summary>
     public static void Start()
     {
+        _startTime = DateTime.UtcNow;
         Console.WriteLine($"Starting ComponentsEngine.");
-        
-        var componentTypes = Discover();
-        if (componentTypes.Count == 0) return;
-        
-        InjectDependencies(componentTypes);
-        Initialize(componentTypes);
-        
-        Console.WriteLine($"ComponentsEngine started successfully!");
+
+        try
+        {
+            var components = Discover();
+            if (components.Count == 0)
+            {
+                Console.WriteLine(
+                    $"Found 0 components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+                return;
+            }
+
+            InjectDependencies(components);
+            Initialize(components);
+
+            Console.WriteLine(
+                $"Initialized {components.Count} components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("There was an error starting ComponentsEngine: " + e);
+            throw;
+        }
     }
 
     public static T? GetComponent<T>() where T : class, IComponent
@@ -36,47 +53,46 @@ public static class ComponentsEngine
         return ComponentStore.Find(type);
     }
 
-    private static List<Type> Discover()
+    private static List<Object?> Discover()
     {
         Console.WriteLine($"Discovering Components...");
-
+        
         var componentTypes = ExecutingAssembly.GetTypes()
             .Where(t => t.GetInterfaces().Contains(typeof(IComponent))
                         && !t.IsAbstract
                         && !Attribute.IsDefined(t, typeof(IgnoreComponent))
             ).ToList();
-
+        
+        var components = new List<object?>(componentTypes.Count);
+        
         foreach (var componentType in componentTypes)
         {
-            ComponentStore.Register(componentType);
+            components.Add(ComponentStore.Register(componentType));
             Console.WriteLine($"Registered Component of type {componentType.Name}");
         }
 
-        return componentTypes;
+        return components;
     }
 
-    private static void InjectDependencies(List<Type> componentTypes)
+    private static void InjectDependencies(List<object?> components)
     {
         Console.WriteLine($"Injecting Components...");
-        foreach (var componentType in componentTypes)
+        foreach (var component in components)
         {
-            // I could've just returned components from the Discover methods and iterate them here to avoid having to call find, 
-            // but honestly, dictionary access is O(1) and that way I don't have to worry about returning an object of specific types
-            // every time I call ComponentStore.Register(type)
-            var componentInstance = ComponentStore.Find(componentType);
-            if (componentInstance is null) continue;
-
+            if (component is null) continue;
+            
+            var componentType = component.GetType();
             var componentProperties =
                 componentType.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                     .Where(property => Attribute.IsDefined(property, typeof(Inject)));
 
-            InjectIntoProperties(componentInstance, componentType, componentProperties);
+            InjectIntoProperties(component, componentType, componentProperties);
 
             var componentFields =
                 componentType.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                     .Where(property => Attribute.IsDefined(property, typeof(Inject)));
 
-            InjectIntoFields(componentInstance, componentType, componentFields);
+            InjectIntoFields(component, componentType, componentFields);
         }
     }
 
@@ -128,17 +144,11 @@ public static class ComponentsEngine
         }
     }
 
-    private static void Initialize(List<Type> componentTypes)
+    private static void Initialize(List<object?> components)
     {
-        foreach (var componentType in componentTypes)
+        foreach (IComponent? component in components)
         {
-            if (ComponentStore.Find(componentType) is not IComponent component)
-            {
-                Console.WriteLine($"Couldn't find component of type {componentType}.");
-                continue;
-            }
-
-            component.Initialize();
+            component?.Initialize();
         }
     }
 }

@@ -23,11 +23,11 @@ public interface IComponentStore
     /// Creates a Singleton instance of a component. It must contain a parameterless constructor.
     /// </summary>
     /// <typeparam name="T">Type of the component you want to create. Must implement the IComponent interface.</typeparam>
-    void Register<T>() where T : class, IComponent, new();
+    T? Register<T>() where T : class, IComponent, new();
         
     /// <summary>
     /// Creates a Singleton instance of a component. It must contain a parameterless constructor.
     /// </summary>
     /// <param name="type">Type of the component you want to create. Must implement the IComponent interface.</param>
-    void Register(Type type);
+    object? Register(Type type);
 }

@@ -5,7 +5,7 @@ namespace Summer.DependencyInjection;
 
 public class ComponentStore : IComponentStore
 {
-    private readonly Dictionary<Type, object> _components = new Dictionary<Type, object>();
+    private readonly Dictionary<Type, object?> _components = new Dictionary<Type, object?>();
     
     public T? Find<T>() where T : class, IComponent
     {
@@ -24,19 +24,21 @@ public class ComponentStore : IComponentStore
         return _components[type];
     }
 
-    public void Register<T>() where T : class, IComponent, new()
+    public T? Register<T>() where T : class, IComponent, new()
     {
         var type = typeof(T);
         if (_components.ContainsKey(type)) 
-            return;
-        
-        _components.Add(type, new T());
+            return null;
+
+        var instance = new T();
+        _components.Add(type, instance);
+        return instance;
     }
 
-    public void Register(Type type)
+    public object? Register(Type type)
     {
         if (_components.ContainsKey(type)) 
-            return;
+            return null;
         
         if (!typeof(IComponent).IsAssignableFrom(type))
         {
@@ -55,5 +57,6 @@ public class ComponentStore : IComponentStore
         }
         
         _components.Add(type, instance);
+        return instance;
     }
 }
