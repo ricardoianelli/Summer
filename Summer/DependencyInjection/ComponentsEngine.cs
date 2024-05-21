@@ -9,11 +9,11 @@ public static class ComponentsEngine
     /// <summary>
     /// Discover and initialize Components.
     /// </summary>
-    public static async Task Start()
+    public static void Start()
     {
-        var componentTypes = await Discover();
-        await InjectDependencies(componentTypes);
-        await Initialize(componentTypes);
+        var componentTypes = Discover();
+        InjectDependencies(componentTypes);
+        Initialize(componentTypes);
     }
 
     public static T? GetComponent<T>() where T : class, IComponent
@@ -27,18 +27,18 @@ public static class ComponentsEngine
         return ComponentStore.Find(type);
     }
 
-    private static async Task<List<Type>> Discover()
+    private static List<Type> Discover()
     {
         return new List<Type>();
     }
 
-    private static Task InjectDependencies(List<Type> componentTypes)
+    private static void InjectDependencies(List<Type> componentTypes)
     {
-        return Task.CompletedTask;
+        
     }
 
-    private static Task Initialize(List<Type> componentTypes)
+    private static void Initialize(List<Type> componentTypes)
     {
-        return Task.CompletedTask;
+        
     }
 }
