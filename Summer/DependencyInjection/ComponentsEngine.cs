@@ -7,6 +7,7 @@ namespace Summer.DependencyInjection;
 public static class ComponentsEngine
 {
     private static readonly ComponentStore ComponentStore = new();
+    public static Assembly ExecutingAssembly { get; set; } = Assembly.GetExecutingAssembly();
 
     /// <summary>
     /// Discover and initialize Components.
@@ -25,7 +26,7 @@ public static class ComponentsEngine
         return component as T;
     }
 
-    public static object? Find(Type type)
+    public static object? GetComponent(Type type)
     {
         return ComponentStore.Find(type);
     }
@@ -33,11 +34,12 @@ public static class ComponentsEngine
     private static List<Type> Discover()
     {
         Console.WriteLine($"Discovering Components...");
-        var assembly = Assembly.GetExecutingAssembly();
 
-        var componentTypes = assembly.GetTypes()
-            .Where(t => t.GetInterfaces().Contains(typeof(IComponent)) && !t.IsAbstract)
-            .ToList();
+        var componentTypes = ExecutingAssembly.GetTypes()
+            .Where(t => t.GetInterfaces().Contains(typeof(IComponent))
+                        && !t.IsAbstract
+                        && !Attribute.IsDefined(t, typeof(IgnoreComponent))
+            ).ToList();
 
         foreach (var componentType in componentTypes)
         {

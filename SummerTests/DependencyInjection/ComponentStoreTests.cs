@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using FluentAssertions;
 using Summer.DependencyInjection;
+using Summer.DependencyInjection.Attributes;
 using Summer.DependencyInjection.Exceptions;
 using Summer.DependencyInjection.Interfaces;
 
@@ -109,6 +110,7 @@ public class ComponentStoreTests
         Assert.Throws<NotAValidComponentException>(() => componentStore.Register(typeof(ComponentWithoutEmptyConstructor)));
     }
 
+    [IgnoreComponent]
     private class ComponentWithoutEmptyConstructor : IComponent
     {
         public ComponentWithoutEmptyConstructor(string param)
@@ -121,6 +123,7 @@ public class ComponentStoreTests
         }
     }
     
+    [IgnoreComponent]
     private class ExampleComponent : IComponent
     {
         public void Initialize()
