@@ -44,5 +44,10 @@ As long as we grow together, this project is already a win.
 - [ ] Alerts
 
 #### Enhancements:
-- [ ] Support to .Net Framework (For people using Unity Engine and Legacy Apps)
-- [ ] HttpClient extension methods supporting timeout
+- [ ] Add support to .Net Framework (For people using Unity Engine and Legacy Apps)
+- [ ] Make it possible to do constructor injection.
+- [ ] Make it possible to do DI during runtime.
+- [ ] Remove the need of implementing IComponent to be a component.
+- [ ] Make it possible to do DI of non-component classes.
+- [ ] Add support for non-singleton components and injections.
+- [ ] HttpClient extension methods supporting timeout.
