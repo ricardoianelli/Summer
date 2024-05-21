@@ -1,4 +1,6 @@
-﻿## **Dependency Injection example**
+**Associated PR:** [Add basic dependency injection](https://github.com/ricardoianelli/Summer/pull/2)
+ 
+ ## **Dependency Injection example**
 
 Your Program.cs should already look like this:
 
