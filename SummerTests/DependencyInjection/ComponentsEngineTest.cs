@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using FluentAssertions;
+using Summer.AsyncEvents;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Attributes;
 using Summer.DependencyInjection.Interfaces;

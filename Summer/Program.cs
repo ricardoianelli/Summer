@@ -1,18 +1,19 @@
-﻿using Summer.Components.Example;
+﻿using Summer.AsyncEvents;
 using Summer.DependencyInjection;
 
 namespace Summer;
 
 internal class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         ComponentsEngine.Start();
+        EventNotifier.DiscoverEventHandlers();
+        
         Console.WriteLine("Hello, Summer!");
 
-        var alarms = ComponentsEngine.GetComponent<Alarms>();
-        var timeNow = DateTime.Now;
-        alarms?.AddAlarm(timeNow.Hour, timeNow.Minute, timeNow.Second+10);
+        await EventNotifier.Notify(new AsyncEvent1());
+        await EventNotifier.Notify(new AsyncEvent2());
         
         Console.WriteLine("Press enter at any time to exit the program!");
         Console.ReadLine();
