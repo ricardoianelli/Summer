@@ -4,20 +4,21 @@ using Summer.AsyncEvents.Interfaces;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Exceptions;
 
-namespace Summer.AsyncEvents;
+namespace Summer.AsyncEventNotifier;
 
 public static class EventNotifier
 {
     private static readonly Dictionary<Type, List<EventHandlerWrapper>> EventListeners = new();
     public delegate Task AsyncEventHandler<in T>(T msg) where T : IAsyncEvent;
-    public record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
+
+    private record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
 
     public static void DiscoverEventHandlers()
     {
         var assembly = Assembly.GetExecutingAssembly();
 
         var handlerTypes = assembly.GetTypes()
-            .Where(t => t.GetMethods().Any(m => m.GetCustomAttributes(typeof(AsyncEventListener), false).Length > 0))
+            .Where(t => !t.IsAbstract && t.GetMethods().Any(m => m.GetCustomAttributes(typeof(AsyncEventListener), true).Length > 0))
             .ToList();
 
         foreach (var type in handlerTypes)

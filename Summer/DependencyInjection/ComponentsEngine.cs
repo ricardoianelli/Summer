@@ -6,38 +6,77 @@ namespace Summer.DependencyInjection;
 
 public static class ComponentsEngine
 {
+    private enum ComponentsEngineState
+    {
+        None,
+        Started,
+        Initialized
+    }
+    
     public static Assembly ExecutingAssembly { get; set; } = Assembly.GetExecutingAssembly();
 
     private static readonly ComponentStore ComponentStore = new();
+    private static List<object?> _temporaryComponentList;
     private static DateTime _startTime;
+    private static ComponentsEngineState _state = ComponentsEngineState.None;
 
     /// <summary>
-    /// Discover and initialize Components.
+    /// Discover Components and do dependency injection.
     /// </summary>
     public static void Start()
     {
+        if (_state != ComponentsEngineState.None) return;
+        
         _startTime = DateTime.UtcNow;
-        Console.WriteLine($"Starting ComponentsEngine.");
+        Console.WriteLine($"Starting ComponentsEngine...");
 
         try
         {
-            var components = Discover();
-            if (components.Count == 0)
+            _temporaryComponentList = Discover();
+            if (_temporaryComponentList.Count == 0)
             {
                 Console.WriteLine(
-                    $"Found 0 components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+                    $"Found 0 components. (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
                 return;
             }
 
-            InjectDependencies(components);
-            Initialize(components);
-
+            InjectDependencies(_temporaryComponentList);
             Console.WriteLine(
-                $"Initialized {components.Count} components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+                $"Injected dependencies. (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+            
+            _state = ComponentsEngineState.Started;
+            Console.WriteLine($"ComponentsEngine started. Please remember to initialize it by calling Initialize().");
         }
         catch (Exception e)
         {
             Console.WriteLine("There was an error starting ComponentsEngine: " + e);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Initialize Components.
+    /// </summary>
+    public static void Initialize()
+    {
+        if (_state != ComponentsEngineState.Started) return;
+        
+        _startTime = DateTime.UtcNow;
+        Console.WriteLine($"Initializing Components...");
+
+        try
+        {
+            Initialize(_temporaryComponentList);
+
+            Console.WriteLine(
+                $"Initialized {_temporaryComponentList.Count} components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+            
+            _temporaryComponentList.Clear();
+            _state = ComponentsEngineState.Initialized;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("There was an error initializing ComponentsEngine: " + e);
             throw;
         }
     }
