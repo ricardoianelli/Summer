@@ -15,6 +15,8 @@ public static class EventNotifier
 
     public static void DiscoverEventHandlers()
     {
+        Console.WriteLine("===============================================");
+        Console.WriteLine("Discovering async event handlers...");
         var assembly = Assembly.GetExecutingAssembly();
 
         var handlerTypes = assembly.GetTypes()
@@ -36,7 +38,7 @@ public static class EventNotifier
 
             if (instance is null || instance.GetType() != type)
             {
-                Console.WriteLine($"Couldn't find an instance of the component {type} during event subscription.");
+                Console.WriteLine($"- Couldn't find an instance of the component {type} during event subscription.");
                 continue;
             }
 
@@ -50,7 +52,7 @@ public static class EventNotifier
                 if (!IsAValidAsyncEventHandler(method))
                 {
                     Console.WriteLine(
-                        $"Method {method.Name} couldn't be subscribed to event {listenerAttribute.EventType.Name} because of an invalid method signature.");
+                        $"- Method {method.Name} couldn't be subscribed to event {listenerAttribute.EventType.Name} because of an invalid method signature.");
                     continue;
                 }
 
@@ -59,6 +61,8 @@ public static class EventNotifier
                 Subscribe(listenerAttribute.EventType, wrapper);
             }
         }
+        
+        Console.WriteLine("Finished discovering async event handlers.");
     }
 
     private static bool IsAValidAsyncEventHandler(MethodBase method)
@@ -84,7 +88,7 @@ public static class EventNotifier
         var handlerWrapper = new EventHandlerWrapper(handler.Target.GetType(), handler.Target, handler.Method);
 
         Console.WriteLine(
-            $"Adding event listener for {type.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
+            $"- Adding event listener for {type.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
         EventListeners[type].Add(handlerWrapper);
     }
 
@@ -96,7 +100,7 @@ public static class EventNotifier
         }
 
         Console.WriteLine(
-            $"Adding event listener for {eventType.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
+            $"- Adding event listener for {eventType.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
         EventListeners[eventType].Add(handlerWrapper);
     }
 

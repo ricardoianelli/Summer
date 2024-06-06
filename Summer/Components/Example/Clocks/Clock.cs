@@ -7,10 +7,14 @@ namespace Summer.Components.Example.Clocks;
 
 public abstract class Clock : IComponent
 {
+    private static bool _isObservingTime = false;
     protected abstract string GetSound();
     
     public void Initialize()
     {
+        if (_isObservingTime) return;
+        
+        _isObservingTime = true; 
         Task.Run(ObserveTime);
     }
 
@@ -35,7 +39,7 @@ public abstract class Clock : IComponent
             // If I wait, I would have to do extra calculations to ensure the 1s timeframe between runs.
             // Think about it that way: If I lose 0.2s here waiting, and then wait for 1s, I actually had a 
             // Difference of 1.2 seconds between OnTimeChanged events, instead of 1s. After 5s, I would be 1s late.
-            OnTimeChanged(new ClockTime(time.Hour, time.Minute, time.Second)); 
+            await OnTimeChanged(new ClockTime(time.Hour, time.Minute, time.Second)); 
             
             await Task.Delay(1000); //The clock goes 1s at a time, so let's wait for 1s.
         }

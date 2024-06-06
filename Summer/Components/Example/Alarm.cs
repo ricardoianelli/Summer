@@ -37,6 +37,5 @@ public class Alarm : IComponent
         
         var alarmSounded = new AlarmEvent(timeChangedEvent.Time);
         await EventNotifier.Notify(alarmSounded);
-        Console.WriteLine($"[{timeChangedEvent.Time}] Your {timeChangedEvent.Time} alarms should have sounded!");
     }
 }

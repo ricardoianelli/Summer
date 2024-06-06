@@ -12,8 +12,10 @@ internal class Program
         EventNotifier.DiscoverEventHandlers();
         ComponentsEngine.Initialize();
         
+        Console.WriteLine("===============================================");
         Console.WriteLine("Hello, Summer!");
-        Console.WriteLine("Press enter at any time to exit the program!");
+        Console.WriteLine("- Press enter at any time to exit the program!");
+        Console.WriteLine("===============================================\n");
         
         var alarm = ComponentsEngine.GetComponent<Alarm>();
         if (alarm is null)
@@ -21,9 +23,7 @@ internal class Program
             throw new Exception("Couldn't find Alarm component!");
         }
 
-        var alarmTime = DateTime.Now.AddSeconds(5);
-        Console.WriteLine($"alarmTime: {alarmTime}");
-        alarm.AddAlarm(alarmTime);
+        alarm.AddAlarm(DateTime.Now.AddSeconds(5));
         
         Console.ReadLine();
     }
