@@ -37,7 +37,7 @@ As long as we grow together, this project is already a win.
 ## 🚧 Progress 🚧
 #### Core:
 - [x] Dependency Injection using attributes. (Example: [Inject]) **([PR](https://github.com/ricardoianelli/Summer/pull/2) - [Docs](docs/DI.md))**
-- [ ] Async Events in a Publish/Subscribe pattern.
+- [X] Async Events in a Publish/Subscribe pattern. **([PR](https://github.com/ricardoianelli/Summer/pull/3) - [Docs](docs/AsyncEvents.md))**
 - [ ] Aspect-Oriented Programming
 - [ ] Metrics Dashboard
 - [ ] Logs Dashboard
