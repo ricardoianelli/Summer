@@ -1,3 +1,5 @@
+**Associated PR:** [Add Async Events](https://github.com/ricardoianelli/Summer/pull/3)
+ 
  ## **Async Events example**
 
 Make your Program.cs look like this:
