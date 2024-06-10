@@ -13,12 +13,11 @@ public static class EventNotifier
 
     private record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
 
-    public static void DiscoverEventHandlers()
+    public static void DiscoverEventHandlers(Assembly assembly)
     {
         var startTime = DateTime.UtcNow;
         
         Console.WriteLine("=> Discovering async event handlers...");
-        var assembly = Assembly.GetExecutingAssembly();
 
         var handlerTypes = assembly.GetTypes()
             .Where(t => !t.IsAbstract && t.GetMethods().Any(m => m.GetCustomAttributes(typeof(AsyncEventListener), true).Length > 0))

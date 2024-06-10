@@ -39,7 +39,7 @@ public static class ComponentsEngine
 
     private static void DiscoverEventHandlers()
     {
-        EventNotifier.DiscoverEventHandlers();
+        EventNotifier.DiscoverEventHandlers(ExecutingAssembly);
     }
 
     private static void DiscoverComponents()
