@@ -8,8 +8,4 @@
         <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Components\Interfaces\" />
-    </ItemGroup>
-
 </Project>
