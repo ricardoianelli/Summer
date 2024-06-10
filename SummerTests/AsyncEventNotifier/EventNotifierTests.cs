@@ -8,9 +8,12 @@ using Summer.DependencyInjection.Interfaces;
 
 namespace SummerTests.AsyncEventNotifier;
 
+// This needs to be passed so that we execute tests synchronously.
+// If we don't, since we're dealing with ComponentEngine which is static,
+// the tests between two different files would override themselves and fail.
+[Collection("ComponentsEngineTests")]
 public class EventNotifierTests
 {
-    
     public EventNotifierTests()
     {
         ComponentsEngine.ExecutingAssembly = Assembly.GetExecutingAssembly();
