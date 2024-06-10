@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Summer.AsyncEventNotifier;
 using Summer.DependencyInjection.Attributes;
 using Summer.DependencyInjection.Interfaces;
 
@@ -6,47 +7,28 @@ namespace Summer.DependencyInjection;
 
 public static class ComponentsEngine
 {
-    private enum ComponentsEngineState
-    {
-        None,
-        Started,
-        Initialized
-    }
-    
     public static Assembly ExecutingAssembly { get; set; } = Assembly.GetExecutingAssembly();
 
     private static readonly ComponentStore ComponentStore = new();
     private static List<object?> _temporaryComponentList;
-    private static DateTime _startTime;
-    private static ComponentsEngineState _state = ComponentsEngineState.None;
+
+    private static int _dependenciesInjected = 0;
 
     /// <summary>
     /// Discover Components and do dependency injection.
     /// </summary>
     public static void Start()
     {
-        if (_state != ComponentsEngineState.None) return;
-        
-        _startTime = DateTime.UtcNow;
         Console.WriteLine("===============================================");
         Console.WriteLine($"Starting ComponentsEngine...");
 
         try
         {
-            _temporaryComponentList = Discover();
-            if (_temporaryComponentList.Count == 0)
-            {
-                Console.WriteLine(
-                    $"- Found 0 components. (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
-                return;
-            }
-
-            InjectDependencies(_temporaryComponentList);
-            Console.WriteLine(
-                $"- Injected dependencies. (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
-            
-            _state = ComponentsEngineState.Started;
-            Console.WriteLine($"ComponentsEngine started. Please remember to initialize it by calling Initialize().");
+            DiscoverComponents();
+            InjectDependencies();
+            DiscoverEventHandlers();
+            Initialize();
+            Console.WriteLine($"ComponentsEngine started.");
         }
         catch (Exception e)
         {
@@ -55,26 +37,40 @@ public static class ComponentsEngine
         }
     }
 
-    /// <summary>
-    /// Initialize Components.
-    /// </summary>
-    public static void Initialize()
+    private static void DiscoverEventHandlers()
     {
-        if (_state != ComponentsEngineState.Started) return;
-        
-        _startTime = DateTime.UtcNow;
-        Console.WriteLine("===============================================");
-        Console.WriteLine("Initializing Components...");
+        EventNotifier.DiscoverEventHandlers();
+    }
+
+    private static void DiscoverComponents()
+    {
+        var startTime = DateTime.UtcNow;
+        _temporaryComponentList = Discover();
+        Console.WriteLine(
+            $"Found {_temporaryComponentList.Count} components. (Time: {(DateTime.UtcNow - startTime).Milliseconds} ms)");
+    }
+
+    private static void InjectDependencies()
+    {
+        var startTime = DateTime.UtcNow;
+        InjectDependencies(_temporaryComponentList);
+        Console.WriteLine(
+            $"Injected {_dependenciesInjected} dependencies. (Time: {(DateTime.UtcNow - startTime).Milliseconds} ms)");
+    }
+    
+    private static void Initialize()
+    {
+        var startTime = DateTime.UtcNow;
+        Console.WriteLine("=> Initializing Components...");
 
         try
         {
             Initialize(_temporaryComponentList);
 
             Console.WriteLine(
-                $"Initialized {_temporaryComponentList.Count} components! (Time: {(DateTime.UtcNow - _startTime).Milliseconds} ms)");
+                $"Initialized {_temporaryComponentList.Count} components! (Time: {(DateTime.UtcNow - startTime).Milliseconds} ms)");
             
             _temporaryComponentList.Clear();
-            _state = ComponentsEngineState.Initialized;
         }
         catch (Exception e)
         {
@@ -96,7 +92,7 @@ public static class ComponentsEngine
 
     private static List<Object?> Discover()
     {
-        Console.WriteLine("- Discovering Components...");
+        Console.WriteLine("=> Discovering Components...");
         
         var componentTypes = ExecutingAssembly.GetTypes()
             .Where(t => t.GetInterfaces().Contains(typeof(IComponent))
@@ -109,7 +105,7 @@ public static class ComponentsEngine
         foreach (var componentType in componentTypes)
         {
             components.Add(ComponentStore.Register(componentType));
-            Console.WriteLine($"-- Registered Component of type {componentType.Name}");
+            Console.WriteLine($"--> Registered Component of type {componentType.Name}");
         }
 
         return components;
@@ -117,7 +113,7 @@ public static class ComponentsEngine
 
     private static void InjectDependencies(List<object?> components)
     {
-        Console.WriteLine($"- Injecting Components...");
+        Console.WriteLine($"=> Injecting Components...");
         foreach (var component in components)
         {
             if (component is null) continue;
@@ -156,12 +152,13 @@ public static class ComponentsEngine
             if (!property.CanWrite)
             {
                 // In the future I could just change the backing field generated by C#, but let's keep it simple for now.
-                Console.WriteLine($"--Property {componentType.Name}.{propertyType.Name} does not have a 'set' accessor.");
+                Console.WriteLine($"-- Property {componentType.Name}.{propertyType.Name} does not have a 'set' accessor.");
                 continue;
             }
 
             property.SetValue(componentInstance, componentToBeInjected);
-            Console.WriteLine($"--Injected component {propertyType.Name} into {componentType.Name}.");
+            _dependenciesInjected++;
+            Console.WriteLine($"--> Injected component {propertyType.Name} into {componentType.Name}.");
         }
     }
 
@@ -176,12 +173,13 @@ public static class ComponentsEngine
             if (componentToBeInjected == null)
             {
                 // Could just register it again, but it should have created it during Discover(), so it shouldn't happen. 
-                Console.WriteLine($"--Could not find a component to inject into {componentType.Name}.{fieldType.Name}.");
+                Console.WriteLine($"-- Could not find a component to inject into {componentType.Name}.{fieldType.Name}.");
                 continue;
             }
 
             field.SetValue(componentInstance, componentToBeInjected);
-            Console.WriteLine($"--Injected component {fieldType.Name} into {componentType.Name}.");
+            _dependenciesInjected++;
+            Console.WriteLine($"--> Injected component {fieldType.Name} into {componentType.Name}.");
         }
     }
 

@@ -9,8 +9,6 @@ internal class Program
     static async Task Main(string[] args)
     {
         ComponentsEngine.Start();
-        EventNotifier.DiscoverEventHandlers();
-        ComponentsEngine.Initialize();
         
         Console.WriteLine("===============================================");
         Console.WriteLine("Hello, Summer!");
