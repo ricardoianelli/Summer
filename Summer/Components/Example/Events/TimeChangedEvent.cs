@@ -1,5 +1,5 @@
-﻿using Summer.AsyncEvents.Interfaces;
+﻿using Summer.Events.Interfaces;
 
 namespace Summer.Components.Example.Events;
 
-public record TimeChangedEvent(ClockTime Time) : IAsyncEvent;
+public record TimeChangedEvent(ClockTime Time) : IEvent;

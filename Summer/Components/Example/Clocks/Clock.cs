@@ -1,7 +1,7 @@
-﻿using Summer.AsyncEventNotifier;
-using Summer.AsyncEvents.Attributes;
-using Summer.Components.Example.Events;
+﻿using Summer.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
+using Summer.Events;
+using Summer.Events.Attributes;
 
 namespace Summer.Components.Example.Clocks;
 
@@ -23,10 +23,10 @@ public abstract class Clock : IComponent
         return DateTime.Now.ToString("HH:mm:ss.fff");
     }
     
-    private static async Task OnTimeChanged(ClockTime clockTime)
+    private static void OnTimeChanged(ClockTime clockTime)
     {
         var timeChangedEvent = new TimeChangedEvent(clockTime);
-        await EventNotifier.Notify(timeChangedEvent);
+        EventNotifier.Notify(timeChangedEvent);
     }
     
     private static async Task ObserveTime()
@@ -44,10 +44,16 @@ public abstract class Clock : IComponent
         }
     }
 
-    [AsyncEventListener(typeof(AlarmEvent))]
-    public virtual async Task OnAlarmSounded(AlarmEvent alarmEvent)
+    [EventListener(typeof(AlarmEvent))]
+    public virtual async Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
     {
-        Console.WriteLine($"[{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
-        return;
+        Console.WriteLine($"ASYNC -> [{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
+        throw new Exception("Oh no, the clock fell and broke!");
+    }
+    
+    [EventListener(typeof(AlarmEvent))]
+    public virtual void OnAlarmSounded(AlarmEvent alarmEvent)
+    {
+        Console.WriteLine($"SYNC -> [{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
     }
 }
