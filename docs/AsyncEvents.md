@@ -364,7 +364,12 @@ public virtual void OnYourEvent(YourEvent yourEvent)
 
 
 To notify an event, you have a few options:
+```csharp
+public static void Notify(IEvent @event, bool ignoreAsync = false)
+public static async Task NotifyAsync(IEvent @event, bool ignoreSync = false)
+```
 
+---
 
 ```csharp
 await EventNotifier.NotifyAsync(yourEvent);
