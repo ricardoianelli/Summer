@@ -1,4 +1,4 @@
-## There have been some breaking changes regarding events, so after reading all of this document to learn about the usage, check the changes added by this PR: [Enhance Event Notification](https://github.com/ricardoianelli/Summer/pull/4)
+## There have been some breaking changes regarding events, so please pay attention to the information at the end of the document.
 
 ---
 
@@ -331,3 +331,72 @@ As long as T implements the IAsyncEvent interface and the handler you pass to th
 - It needs have the async Task return type.
 - It needs to have only one parameter, being of the type of the async event you're listening to.
 
+### Attention!!
+[Enhance Event Notification](https://github.com/ricardoianelli/Summer/pull/4) Pull Request added breaking changes how you use events. The changes are:
+
+Instead of implementing the **IAsyncEvent** interface, events now implement the **IEvent** interface.
+
+
+Instead of defining an event handler like this:
+```csharp
+[AsyncEventListener(typeof(YourEvent))]
+public async Task OnYourEvent(YourEvent yourEvent)
+{
+    // Do whatever you want in here
+}
+```
+
+You can now define synchronous or asynchronous event handlers like this:
+
+```csharp
+[EventListener(typeof(YourEvent))]
+public virtual async Task OnYourEventAsync(YourEvent yourEvent)
+{
+     // Do whatever you want in here
+}
+
+[EventListener(typeof(YourEvent))]
+public virtual void OnYourEvent(YourEvent yourEvent)
+{
+     // Do whatever you want in here
+}
+```
+
+
+To notify an event, you have a few options:
+
+
+```csharp
+await EventNotifier.NotifyAsync(yourEvent);
+```
+
+Will notify all events asynchronously. The synchronous ones will be executed asynchronously too, but an exception that occurs on them won't stop the notifier from notifying the async handlers, only the other sync handlers that would come after that one.
+
+---
+
+```csharp
+await EventNotifier.NotifyAsync(yourEvent, true);
+```
+
+This will notify ONLY the asynchronous event handlers. The synchronous ones will be ignored.
+
+---
+
+```csharp
+await EventNotifier.Notify(yourEvent);
+```
+
+Will notify all events synchronously. The asynchronous ones will be executed synchronously, but if one of them throws an exception, it won't affect the other ones.
+
+---
+
+```csharp
+await EventNotifier.Notify(yourEvent, true);
+```
+
+This will notify ONLY the synchronous event handlers. The asynchronous ones will be ignored.
+
+---
+
+
+These changes aim to give more flexibility when working with events, which can be very powerful when designing decoupled architectures.
