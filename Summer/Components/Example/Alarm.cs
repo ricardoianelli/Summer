@@ -35,6 +35,6 @@ public class Alarm : IComponent
         if (!_alarmTimes.Remove(timeChangedEvent.Time)) return;
         
         var alarmSounded = new AlarmEvent(timeChangedEvent.Time);
-        await EventNotifier.EventNotifier.NotifyAsync(alarmSounded);
+        await EventNotifier.EventNotifier.NotifyAsync(alarmSounded, true);
     }
 }
