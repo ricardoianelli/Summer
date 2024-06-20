@@ -1,4 +1,4 @@
-﻿namespace Summer.EventNotifier.Attributes;
+﻿namespace Summer.Events.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class EventListener : Attribute

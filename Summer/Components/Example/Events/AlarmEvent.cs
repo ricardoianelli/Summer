@@ -1,4 +1,4 @@
-﻿using Summer.EventNotifier.Interfaces;
+﻿using Summer.Events.Interfaces;
 
 namespace Summer.Components.Example.Events;
 

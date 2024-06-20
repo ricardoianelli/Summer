@@ -1,5 +1,4 @@
-﻿using Summer.AsyncEventNotifier;
-using Summer.Components.Example;
+﻿using Summer.Components.Example;
 using Summer.DependencyInjection;
 
 namespace Summer;

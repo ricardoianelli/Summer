@@ -1,6 +1,7 @@
 ﻿using Summer.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
-using Summer.EventNotifier.Attributes;
+using Summer.Events;
+using Summer.Events.Attributes;
 
 namespace Summer.Components.Example;
 
@@ -35,6 +36,6 @@ public class Alarm : IComponent
         if (!_alarmTimes.Remove(timeChangedEvent.Time)) return;
         
         var alarmSounded = new AlarmEvent(timeChangedEvent.Time);
-        await EventNotifier.EventNotifier.NotifyAsync(alarmSounded, true);
+        await EventNotifier.NotifyAsync(alarmSounded, true);
     }
 }

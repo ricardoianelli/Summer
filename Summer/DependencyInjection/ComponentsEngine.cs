@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Summer.AsyncEventNotifier;
 using Summer.DependencyInjection.Attributes;
 using Summer.DependencyInjection.Interfaces;
+using Summer.Events;
 
 namespace Summer.DependencyInjection;
 

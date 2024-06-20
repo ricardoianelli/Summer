@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Exceptions;
-using Summer.EventNotifier.Attributes;
-using Summer.EventNotifier.Interfaces;
+using Summer.Events.Attributes;
+using Summer.Events.Interfaces;
 
-namespace Summer.EventNotifier;
+namespace Summer.Events;
 
 public static class EventNotifier
 {
@@ -17,11 +17,10 @@ public static class EventNotifier
 
     private record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
 
-    public static void DiscoverEventHandlers()
+    public static void DiscoverEventHandlers(Assembly assembly)
     {
         Console.WriteLine("===============================================");
         Console.WriteLine("Discovering event handlers...");
-        var assembly = Assembly.GetExecutingAssembly();
 
         var handlerTypes = assembly.GetTypes()
             .Where(t => !t.IsAbstract &&
