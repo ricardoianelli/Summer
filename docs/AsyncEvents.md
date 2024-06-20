@@ -1,3 +1,7 @@
+## There have been some breaking changes regarding events, so after reading all of this document to learn about the usage, check the changes added by this PR: [Enhance Event Notification](https://github.com/ricardoianelli/Summer/pull/4)
+
+---
+
 **Associated PR:** [Add Async Events](https://github.com/ricardoianelli/Summer/pull/3)
  
  ## **Async Events example**
