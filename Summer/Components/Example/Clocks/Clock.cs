@@ -36,7 +36,7 @@ public abstract class Clock : IComponent
             var msUntilNextSecond = 1000 - time.Millisecond + 100; // 100ms of margin
             var nextSecDelay = Task.Delay(msUntilNextSecond);
             
-            // We don't want to await this because it will add an extra delay to our 1s timer.
+            // We don't want to await this because it could take more than a sec and that would be problematic.
             // We can just fire and forget, it should be totally fine.
             OnTimeChanged(new ClockTime(time.Hour, time.Minute, time.Second));
             await nextSecDelay;

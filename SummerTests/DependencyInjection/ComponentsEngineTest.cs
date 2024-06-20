@@ -6,6 +6,10 @@ using Summer.DependencyInjection.Interfaces;
 
 namespace SummerTests.DependencyInjection;
 
+// This needs to be passed so that we execute tests synchronously.
+// If we don't, since we're dealing with ComponentEngine which is static,
+// the tests between two different files would override themselves and fail.
+[Collection("ComponentsEngineTests")] 
 public class ComponentsEngineTest
 {
     public ComponentsEngineTest()

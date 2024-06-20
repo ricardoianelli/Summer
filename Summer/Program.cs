@@ -1,4 +1,5 @@
-﻿using Summer.Components.Example;
+﻿using Summer.AsyncEventNotifier;
+using Summer.Components.Example;
 using Summer.DependencyInjection;
 
 namespace Summer;
@@ -8,8 +9,6 @@ internal class Program
     static async Task Main(string[] args)
     {
         ComponentsEngine.Start();
-        EventNotifier.EventNotifier.DiscoverEventHandlers();
-        ComponentsEngine.Initialize();
         
         Console.WriteLine("===============================================");
         Console.WriteLine("Hello, Summer!");
