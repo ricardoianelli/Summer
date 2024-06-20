@@ -137,7 +137,7 @@ public static class EventNotifier
         }
     }
 
-    public static async Task NotifyAsync(IEvent @event)
+    public static async Task NotifyAsync(IEvent @event, bool configureAwait=false)
     {
         try
         {
@@ -163,7 +163,7 @@ public static class EventNotifier
                 }
             }
 
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks).ConfigureAwait(configureAwait);
         }
         catch (Exception e)
         {
