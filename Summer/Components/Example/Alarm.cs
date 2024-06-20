@@ -1,5 +1,5 @@
 ﻿using Summer.AsyncEventNotifier;
-using Summer.AsyncEvents.Attributes;
+using Summer.AsyncEventNotifier.Attributes;
 using Summer.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
 
@@ -30,12 +30,12 @@ public class Alarm : IComponent
         Console.WriteLine($"[{formattedDate}] Added a new alarm for {alarmTime}");
     }
 
-    [AsyncEventListener(typeof(TimeChangedEvent))]
+    [EventListener(typeof(TimeChangedEvent))]
     public async Task OnClockTimeChanged(TimeChangedEvent timeChangedEvent)
     {
         if (!_alarmTimes.Remove(timeChangedEvent.Time)) return;
         
         var alarmSounded = new AlarmEvent(timeChangedEvent.Time);
-        await EventNotifier.Notify(alarmSounded);
+        await EventNotifier.NotifyAsync(alarmSounded);
     }
 }

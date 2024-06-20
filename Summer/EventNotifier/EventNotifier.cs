@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Summer.AsyncEvents.Attributes;
-using Summer.AsyncEvents.Interfaces;
+using Summer.AsyncEventNotifier.Attributes;
+using Summer.AsyncEventNotifier.Interfaces;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Exceptions;
 
@@ -9,18 +9,22 @@ namespace Summer.AsyncEventNotifier;
 public static class EventNotifier
 {
     private static readonly Dictionary<Type, List<EventHandlerWrapper>> EventListeners = new();
-    public delegate Task AsyncEventHandler<in T>(T msg) where T : IAsyncEvent;
+
+    public delegate Task AsyncEventHandler<in T>(T msg) where T : IEvent;
+
+    public delegate void SyncEventHandler<in T>(T msg) where T : IEvent;
 
     private record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
 
     public static void DiscoverEventHandlers()
     {
         Console.WriteLine("===============================================");
-        Console.WriteLine("Discovering async event handlers...");
+        Console.WriteLine("Discovering event handlers...");
         var assembly = Assembly.GetExecutingAssembly();
 
         var handlerTypes = assembly.GetTypes()
-            .Where(t => !t.IsAbstract && t.GetMethods().Any(m => m.GetCustomAttributes(typeof(AsyncEventListener), true).Length > 0))
+            .Where(t => !t.IsAbstract &&
+                        t.GetMethods().Any(m => m.GetCustomAttributes(typeof(EventListener), true).Length > 0))
             .ToList();
 
         foreach (var type in handlerTypes)
@@ -46,10 +50,10 @@ public static class EventNotifier
 
             foreach (var method in type.GetMethods())
             {
-                var listenerAttribute = method.GetCustomAttribute<AsyncEventListener>();
+                var listenerAttribute = method.GetCustomAttribute<EventListener>();
                 if (listenerAttribute == null) continue;
 
-                if (!IsAValidAsyncEventHandler(method))
+                if (!IsAValidEventHandler(method))
                 {
                     Console.WriteLine(
                         $"- Method {method.Name} couldn't be subscribed to event {listenerAttribute.EventType.Name} because of an invalid method signature.");
@@ -61,34 +65,37 @@ public static class EventNotifier
                 Subscribe(listenerAttribute.EventType, wrapper);
             }
         }
-        
+
         Console.WriteLine("Finished discovering async event handlers.");
     }
 
-    private static bool IsAValidAsyncEventHandler(MethodBase method)
+    private static bool IsAValidEventHandler(MethodBase method)
     {
         var parameters = method.GetParameters();
-        return parameters.Length == 1 && typeof(IAsyncEvent).IsAssignableFrom(parameters[0].ParameterType);
+        return parameters.Length == 1 && typeof(IEvent).IsAssignableFrom(parameters[0].ParameterType);
     }
 
-    public static void Subscribe<T>(AsyncEventHandler<T> handler) where T : IAsyncEvent
+    public static void Subscribe<T>(AsyncEventHandler<T> handler) where T : IEvent
     {
         if (handler.Target is null)
         {
             throw new ArgumentException("Null handler during async event handler subscription.");
-        };
-        
+        }
+
+        ;
+
         var type = typeof(T);
-        
+
         if (!EventListeners.ContainsKey(type))
         {
             EventListeners[type] = new List<EventHandlerWrapper>();
         }
-        
+
         var handlerWrapper = new EventHandlerWrapper(handler.Target.GetType(), handler.Target, handler.Method);
 
         Console.WriteLine(
             $"- Adding event listener for {type.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
+
         EventListeners[type].Add(handlerWrapper);
     }
 
@@ -104,11 +111,37 @@ public static class EventNotifier
         EventListeners[eventType].Add(handlerWrapper);
     }
 
-    public static async Task Notify(IAsyncEvent asyncEvent)
+    public static void Notify(IEvent @event)
+    {
+        var eventType = @event.GetType();
+        if (!EventListeners.TryGetValue(eventType, out var handlers))
+        {
+            return;
+        }
+
+        try
+        {
+            foreach (var handler in handlers)
+            {
+                var callResult = handler.Method.Invoke(handler.Instance, [@event]);
+                if (callResult is Task task)
+                {
+                    task.Wait();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Event notification exception: {e}");
+            throw;
+        }
+    }
+
+    public static async Task NotifyAsync(IEvent @event)
     {
         try
         {
-            var eventType = asyncEvent.GetType();
+            var eventType = @event.GetType();
             if (!EventListeners.TryGetValue(eventType, out var handlers))
             {
                 return;
@@ -118,15 +151,23 @@ public static class EventNotifier
 
             foreach (var handler in handlers)
             {
-                var task = handler.Method.Invoke(handler.Instance, [asyncEvent]) as Task ?? Task.CompletedTask;
-                tasks.Add(task);
+                try
+                {
+                    var task = handler.Method.Invoke(handler.Instance, [@event]) as Task ?? Task.CompletedTask;
+                    tasks.Add(task);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(
+                        $"A synchronous event handler on an async notification call threw an exception: {e}");
+                }
             }
 
             await Task.WhenAll(tasks);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"Async event notification exception: {e}");
             throw;
         }
     }

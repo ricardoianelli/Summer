@@ -9,7 +9,7 @@ public class CucoClock : Clock
         return "Cuco, Cuco";
     }
 
-    public override async Task OnAlarmSounded(AlarmEvent alarmEvent)
+    public override async Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
     {
         Console.WriteLine($"[{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
         Console.WriteLine($"[{GetFormattedDateNowString()}] Snoring...");
