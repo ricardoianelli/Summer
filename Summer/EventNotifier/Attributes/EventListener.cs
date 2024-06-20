@@ -1,4 +1,4 @@
-﻿namespace Summer.AsyncEventNotifier.Attributes;
+﻿namespace Summer.EventNotifier.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class EventListener : Attribute

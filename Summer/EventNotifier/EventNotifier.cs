@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using Summer.AsyncEventNotifier.Attributes;
-using Summer.AsyncEventNotifier.Interfaces;
 using Summer.DependencyInjection;
 using Summer.DependencyInjection.Exceptions;
+using Summer.EventNotifier.Attributes;
+using Summer.EventNotifier.Interfaces;
 
-namespace Summer.AsyncEventNotifier;
+namespace Summer.EventNotifier;
 
 public static class EventNotifier
 {

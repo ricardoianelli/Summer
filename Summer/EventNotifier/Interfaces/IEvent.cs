@@ -1,4 +1,4 @@
-﻿namespace Summer.AsyncEventNotifier.Interfaces;
+﻿namespace Summer.EventNotifier.Interfaces;
 
 public interface IEvent
 {

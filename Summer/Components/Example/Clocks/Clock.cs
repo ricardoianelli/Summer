@@ -1,7 +1,6 @@
-﻿using Summer.AsyncEventNotifier;
-using Summer.AsyncEventNotifier.Attributes;
-using Summer.Components.Example.Events;
+﻿using Summer.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
+using Summer.EventNotifier.Attributes;
 
 namespace Summer.Components.Example.Clocks;
 
@@ -26,7 +25,7 @@ public abstract class Clock : IComponent
     private static void OnTimeChanged(ClockTime clockTime)
     {
         var timeChangedEvent = new TimeChangedEvent(clockTime);
-        EventNotifier.Notify(timeChangedEvent);
+        EventNotifier.EventNotifier.Notify(timeChangedEvent);
     }
     
     private static async Task ObserveTime()
