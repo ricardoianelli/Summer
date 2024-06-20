@@ -112,6 +112,11 @@ public static class EventNotifier
         }
 
         var handlerWrapper = new EventHandlerWrapper(handler.Target.GetType(), handler.Target, handler.Method);
+        
+        if (AsyncEventListeners[type].Contains(handlerWrapper))
+        {
+            return;
+        }
 
         Console.WriteLine(
             $"- Adding async event listener for {type.Name} - {handlerWrapper.InstanceType.Name}.{handlerWrapper.Method.Name}");
@@ -126,6 +131,11 @@ public static class EventNotifier
         if (!dictionary.ContainsKey(eventType))
         {
             dictionary[eventType] = new List<EventHandlerWrapper>();
+        }
+        
+        if (dictionary[eventType].Contains(handlerWrapper))
+        {
+            return;
         }
 
         Console.WriteLine(
