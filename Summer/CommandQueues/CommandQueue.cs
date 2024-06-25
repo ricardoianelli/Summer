@@ -23,7 +23,7 @@ public class CommandQueue
         {
             _commandsHistory = new List<ICommand>();
         }
-        
+
         SetState(CommandQueueState.Stopped);
         SetPoolingDelay(poolingDelayInMs);
     }
@@ -36,6 +36,11 @@ public class CommandQueue
     public void SetPoolingDelay(int delayInMs)
     {
         _poolingDelayInMs = delayInMs;
+    }
+
+    public int GetPoolingDelay()
+    {
+        return _poolingDelayInMs;
     }
 
     public void Enqueue(ICommand command)
@@ -72,9 +77,14 @@ public class CommandQueue
         _commandQueue.Clear();
     }
 
+    public int Count()
+    {
+        return _commandQueue.Count;
+    }
+
     public ICommand GetFromHistory(int index)
     {
-        if (index < 0 || GetHistoryCount() >= index)
+        if (index < 0 || index >= GetHistoryCount())
         {
             throw new Exception(
                 $"Commands history doesn't have an item at index {index}. Current count: {GetHistoryCount()}");
@@ -88,7 +98,7 @@ public class CommandQueue
         return new List<ICommand>(_commandsHistory);
     }
 
-    private ICommand? GetNext(bool remove = false)
+    public ICommand? GetNext(bool remove = false)
     {
         ICommand? command;
 
