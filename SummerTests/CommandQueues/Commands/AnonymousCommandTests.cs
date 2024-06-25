@@ -11,20 +11,13 @@ public class AnonymousCommandTests
         var x = 0;
 
         var anonymousCommand = new AnonymousCommand(
-    () =>
-            {
-                x += 3;
-            },
-    () =>
-            {
-                x -= 2;
-            }
+            onExecute: () => { x += 3; },
+            onUndo: () => { x -= 2; }
         );
-        
-        
+
         anonymousCommand.Execute();
         x.Should().Be(3);
-        
+
         anonymousCommand.Undo();
         x.Should().Be(1);
     }
