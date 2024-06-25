@@ -5,7 +5,12 @@ namespace SummerTests.CommandQueues;
 
 public class CommandQueueTests
 {
-    private readonly CommandQueue _queue = new(keepHistory: true);
+    private readonly CommandQueue _queue;
+
+    public CommandQueueTests()
+    {
+        _queue = new CommandQueue(keepHistory: true);
+    }
 
     [Fact]
     public void CommandQueue_ShouldInitializeWithStoppedState()
