@@ -121,7 +121,7 @@ public class CommandQueueTests
         queue.Enqueue(secondCommand);
         queue.Start();
 
-        await Task.Delay(queue.GetPoolingDelay()*10);
+        await Task.Delay(queue.GetPoolingDelay()*5);
         
         queue.GetFromHistory(0).Should().Be(firstCommand);
         queue.GetFromHistory(1).Should().Be(secondCommand);
