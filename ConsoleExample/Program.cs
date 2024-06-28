@@ -1,13 +1,14 @@
-﻿using Summer.Components.Example;
+﻿using System.Reflection;
+using ConsoleExample.Components.Example;
 using Summer.DependencyInjection;
 
-namespace Summer;
+namespace ConsoleExample;
 
 internal class Program
 {
     static async Task Main(string[] args)
     {
-        ComponentsEngine.Start();
+        ComponentsEngine.Start(Assembly.GetExecutingAssembly());
         
         Console.WriteLine("===============================================");
         Console.WriteLine("Hello, Summer!");

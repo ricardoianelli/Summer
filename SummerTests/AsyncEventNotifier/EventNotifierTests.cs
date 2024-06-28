@@ -16,13 +16,12 @@ public class EventNotifierTests
 {
     public EventNotifierTests()
     {
-        ComponentsEngine.ExecutingAssembly = Assembly.GetExecutingAssembly();
+        ComponentsEngine.Start(Assembly.GetExecutingAssembly());
     }
     
     [Fact]
     public async Task NotifyAsync_GivenAnEventWithAttributeSubscription_ShouldNotifyCorrectly()
     {
-        ComponentsEngine.Start();
         var component1 = ComponentsEngine.GetComponent<Component1>();
         component1.Should().NotBeNull();
         component1.number.Should().Be(-1);
@@ -36,7 +35,6 @@ public class EventNotifierTests
     [Fact]
     public async Task NotifyAsync_GivenAManualSubscription_ShouldNotifyCorrectly()
     {
-        ComponentsEngine.Start();
         var component2 = ComponentsEngine.GetComponent<Component2>();
         component2.Should().NotBeNull();
         component2.number.Should().Be(-1);
@@ -56,7 +54,6 @@ public class EventNotifierTests
     [Fact]
     public void Notify_GivenAnEventWithAttributeSubscriptionNotIgnoringAsync_ShouldNotifyCorrectly()
     {
-        ComponentsEngine.Start();
         var component3 = ComponentsEngine.GetComponent<Component3>();
         component3.Should().NotBeNull();
         component3.number.Should().Be(0);
@@ -70,7 +67,6 @@ public class EventNotifierTests
     [Fact]
     public void Notify_GivenAnEventWithAttributeSubscriptionIgnoringAsync_ShouldNotifyCorrectly()
     {
-        ComponentsEngine.Start();
         var component4 = ComponentsEngine.GetComponent<Component4>();
         component4.Should().NotBeNull();
         component4.number.Should().Be(0);

@@ -1,9 +1,9 @@
-﻿using Summer.Components.Example.Events;
+﻿using ConsoleExample.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
 using Summer.Events;
 using Summer.Events.Attributes;
 
-namespace Summer.Components.Example.Clocks;
+namespace ConsoleExample.Components.Example.Clocks;
 
 public abstract class Clock : IComponent
 {

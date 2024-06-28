@@ -1,6 +1,6 @@
-﻿using Summer.Components.Example.Events;
+﻿using ConsoleExample.Components.Example.Events;
 
-namespace Summer.Components.Example.Clocks;
+namespace ConsoleExample.Components.Example.Clocks;
 
 public class CucoClock : Clock
 {
