@@ -1,9 +1,9 @@
-﻿using Summer.Components.Example.Events;
+﻿using ConsoleExample.Components.Example.Events;
 using Summer.DependencyInjection.Interfaces;
 using Summer.Events;
 using Summer.Events.Attributes;
 
-namespace Summer.Components.Example.Clocks;
+namespace ConsoleExample.Components.Example.Clocks;
 
 public abstract class Clock : IComponent
 {
@@ -45,7 +45,7 @@ public abstract class Clock : IComponent
     }
 
     [EventListener(typeof(AlarmEvent))]
-    public virtual async Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
+    public virtual Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
     {
         Console.WriteLine($"ASYNC -> [{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
         throw new Exception("Oh no, the clock fell and broke!");

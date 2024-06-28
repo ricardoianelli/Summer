@@ -14,13 +14,12 @@ public class ComponentsEngineTest
 {
     public ComponentsEngineTest()
     {
-        ComponentsEngine.ExecutingAssembly = Assembly.GetExecutingAssembly();
+        ComponentsEngine.Start(Assembly.GetExecutingAssembly());
     }
     
     [Fact]
     public void Start_GivenTwoComponentsWithAnInjection_ShouldInstantiateAndInjectCorrectly()
     {
-        ComponentsEngine.Start();
         var component1 = ComponentsEngine.GetComponent<Component1>();
         component1.Should().NotBeNull();
         component1?.Component2.Should().NotBeNull();
@@ -29,7 +28,6 @@ public class ComponentsEngineTest
     [Fact]
     public void Start_GivenTwoComponentsWithAnPrivateFieldInjection_ShouldInstantiateAndInjectCorrectly()
     {
-        ComponentsEngine.Start();
         var component3 = ComponentsEngine.GetComponent<Component3>();
         component3.Should().NotBeNull();
         var component1 = component3?.GetComponent1();
@@ -40,7 +38,6 @@ public class ComponentsEngineTest
     [Fact]
     public void Start_GivenAnInjectionOfPropertyWithNoSet_ShouldNotInject()
     {
-        ComponentsEngine.Start();
         var component4 = ComponentsEngine.GetComponent<Component4>();
         component4.Should().NotBeNull();
         var component2 = component4?.Component2;
@@ -50,7 +47,6 @@ public class ComponentsEngineTest
     [Fact]
     public void Start_GivenAnInjectionOfUnregisteredComponent_ShouldNotInject()
     {
-        ComponentsEngine.Start();
         var component5 = ComponentsEngine.GetComponent<Component5>();
         component5.Should().NotBeNull();
         var component6 = component5?.Component6;

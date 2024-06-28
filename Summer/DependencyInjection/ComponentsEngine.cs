@@ -7,7 +7,7 @@ namespace Summer.DependencyInjection;
 
 public static class ComponentsEngine
 {
-    public static Assembly ExecutingAssembly { get; set; } = Assembly.GetExecutingAssembly();
+    public static Assembly ExecutingAssembly { get; set; }
 
     private static readonly ComponentStore ComponentStore = new();
     private static List<object?> _temporaryComponentList;
@@ -19,6 +19,15 @@ public static class ComponentsEngine
     /// </summary>
     public static void Start()
     {
+        Start(Assembly.GetExecutingAssembly());
+    }
+    
+    /// <summary>
+    /// Discover Components and do dependency injection.
+    /// </summary>
+    public static void Start(Assembly executingAssembly)
+    {
+        ExecutingAssembly = executingAssembly;
         Console.WriteLine("===============================================");
         Console.WriteLine($"Starting ComponentsEngine...");
 

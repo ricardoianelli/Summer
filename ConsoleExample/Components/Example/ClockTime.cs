@@ -1,4 +1,4 @@
-﻿namespace Summer.Components.Example;
+﻿namespace ConsoleExample.Components.Example;
 
 public record ClockTime(int Hour, int Minute, int Second)
 {
