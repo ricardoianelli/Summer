@@ -45,7 +45,7 @@ public abstract class Clock : IComponent
     }
 
     [EventListener(typeof(AlarmEvent))]
-    public virtual async Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
+    public virtual Task OnAlarmSoundedAsync(AlarmEvent alarmEvent)
     {
         Console.WriteLine($"ASYNC -> [{GetFormattedDateNowString()}] {GetSound()}! It's {alarmEvent.AlarmTime}!");
         throw new Exception("Oh no, the clock fell and broke!");

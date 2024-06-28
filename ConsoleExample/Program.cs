@@ -6,7 +6,7 @@ namespace ConsoleExample;
 
 internal class Program
 {
-    static async Task Main(string[] args)
+    static Task Main(string[] args)
     {
         ComponentsEngine.Start(Assembly.GetExecutingAssembly());
         
@@ -24,5 +24,6 @@ internal class Program
         alarm.AddAlarm(DateTime.Now.AddSeconds(5));
         
         Console.ReadLine();
+        return Task.CompletedTask;
     }
 }
