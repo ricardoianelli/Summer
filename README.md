@@ -39,6 +39,7 @@ As long as we grow together, this project is already a win.
 - [x] Dependency Injection using attributes. (Example: [Inject]) **([PR](https://github.com/ricardoianelli/Summer/pull/2) - [Docs](docs/DI.md))**
 - [X] Async Events in a Publish/Subscribe pattern. **([PR](https://github.com/ricardoianelli/Summer/pull/3) - [Docs](docs/AsyncEvents.md))**
 - [X] Add more functionality to Events (Accept Synchronous, etc). **([PR](https://github.com/ricardoianelli/Summer/pull/4))**
+- [X] Simple command queue implementation. **([PR](https://github.com/ricardoianelli/Summer/pull/5))**
 - [ ] Aspect-Oriented Programming
 - [ ] Metrics Dashboard
 - [ ] Logs Dashboard
