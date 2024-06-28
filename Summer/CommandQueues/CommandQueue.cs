@@ -27,11 +27,8 @@ public class CommandQueue
         _commandQueue = new ConcurrentQueue<ICommand>();
 
         _keepHistory = keepHistory;
-        if (_keepHistory)
-        {
-            _commandsHistory = new List<ICommand>();
-        }
-
+        _commandsHistory = new List<ICommand>();
+        
         SetState(CommandQueueState.Stopped);
         SetPoolingDelay(poolingDelayInMs);
     }
@@ -185,7 +182,10 @@ public class CommandQueue
             try
             {
                 command.Execute();
-                _commandsHistory?.Add(command);
+                if (_keepHistory)
+                {
+                    _commandsHistory.Add(command);
+                }
             }
             catch (Exception e)
             {
