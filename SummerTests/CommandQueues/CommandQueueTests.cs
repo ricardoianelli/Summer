@@ -5,7 +5,7 @@ namespace SummerTests.CommandQueues;
 
 public class CommandQueueTests
 {
-    private readonly CommandQueue _queue;
+    private CommandQueue _queue;
 
     public CommandQueueTests()
     {
