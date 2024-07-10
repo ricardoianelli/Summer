@@ -11,8 +11,8 @@
 </p>
 
 ## ❓ Why? ❓
-I used to use Spring on Java and loved how productive I was able to be. Ever since moving back to C#, I have always felt like C# is great, but it could be even better.
-Well, if Spring is gone, all we can do is welcome Summer!
+I used to use Spring on Java and loved how productive I was able to be. Ever since moving back to C#, I have always felt like C# is great, but I do miss some of the things that made Java nice to use.
+Because of that, I decided to start this project, mainly as a way of having fun.
 
 ## 🚀 Goals 🚀
 The initial goal is to make a C# Framework that has:
