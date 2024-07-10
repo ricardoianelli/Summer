@@ -8,7 +8,7 @@ internal class Program
 {
     static Task Main(string[] args)
     {
-        ComponentsEngine.Start(Assembly.GetExecutingAssembly());
+        ComponentsEngine.Start(AppDomain.CurrentDomain.GetAssemblies());
         
         Console.WriteLine("===============================================");
         Console.WriteLine("Hello, Summer!");

@@ -17,15 +17,22 @@ public static class EventNotifier
 
     private record EventHandlerWrapper(Type InstanceType, object Instance, MethodInfo Method);
 
-    public static void DiscoverEventHandlers(Assembly assembly)
+    public static void DiscoverEventHandlers(Assembly[] assemblies)
     {
         Console.WriteLine("===============================================");
         Console.WriteLine("Discovering event handlers...");
 
-        var handlerTypes = assembly.GetTypes()
-            .Where(t => !t.IsAbstract &&
-                        t.GetMethods().Any(m => m.GetCustomAttributes(typeof(EventListener), true).Length > 0))
-            .ToList();
+        var handlerTypes = new List<Type>();
+        
+        foreach (var assembly in assemblies)
+        {
+            handlerTypes.AddRange(assembly.GetTypes()
+                .Where(t => 
+                    !t.IsAbstract && 
+                    t.GetMethods().Any(m => 
+                        m.GetCustomAttributes(typeof(EventListener), true).Length > 0)));
+        }
+        
 
         foreach (var type in handlerTypes)
         {

@@ -7,7 +7,7 @@ namespace Summer.DependencyInjection;
 
 public static class ComponentsEngine
 {
-    public static Assembly ExecutingAssembly { get; set; }
+    public static Assembly[] ExecutingAssemblies { get; set; }
 
     private static readonly ComponentStore ComponentStore = new();
     private static List<object?> _temporaryComponentList;
@@ -19,15 +19,15 @@ public static class ComponentsEngine
     /// </summary>
     public static void Start()
     {
-        Start(Assembly.GetExecutingAssembly());
+        Start(AppDomain.CurrentDomain.GetAssemblies());
     }
     
     /// <summary>
     /// Discover Components and do dependency injection.
     /// </summary>
-    public static void Start(Assembly executingAssembly)
+    public static void Start(Assembly[] executingAssemblies)
     {
-        ExecutingAssembly = executingAssembly;
+        ExecutingAssemblies = executingAssemblies;
         Console.WriteLine("===============================================");
         Console.WriteLine($"Starting ComponentsEngine...");
 
@@ -48,7 +48,7 @@ public static class ComponentsEngine
 
     private static void DiscoverEventHandlers()
     {
-        EventNotifier.DiscoverEventHandlers(ExecutingAssembly);
+        EventNotifier.DiscoverEventHandlers(ExecutingAssemblies);
     }
 
     private static void DiscoverComponents()
@@ -102,12 +102,17 @@ public static class ComponentsEngine
     private static List<Object?> Discover()
     {
         Console.WriteLine("=> Discovering Components...");
+
+        var componentTypes = new List<Type>();
         
-        var componentTypes = ExecutingAssembly.GetTypes()
-            .Where(t => t.GetInterfaces().Contains(typeof(IComponent))
-                        && !t.IsAbstract
-                        && !Attribute.IsDefined(t, typeof(IgnoreComponent))
-            ).ToList();
+        foreach (var assembly in ExecutingAssemblies)
+        {
+            componentTypes.AddRange(assembly.GetTypes()
+                .Where(t => t.GetInterfaces().Contains(typeof(IComponent))
+                            && !t.IsAbstract
+                            && !Attribute.IsDefined(t, typeof(IgnoreComponent))
+                ));
+        }
         
         var components = new List<object?>(componentTypes.Count);
         
