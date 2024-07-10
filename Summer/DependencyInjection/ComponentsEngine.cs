@@ -22,6 +22,11 @@ public static class ComponentsEngine
         Start(AppDomain.CurrentDomain.GetAssemblies());
     }
     
+    public static void Start(Assembly assembly)
+    {
+        Start([assembly]);
+    }
+    
     /// <summary>
     /// Discover Components and do dependency injection.
     /// </summary>
