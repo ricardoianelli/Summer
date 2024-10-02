@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AISServer.Components.ConveyorBelts;
 using AISServer.Components.Hardware.Profibus;
+using AISServer.Components.Hardware.Profibus.Enums;
 using AISServer.Components.Hardware.Profibus.Interfaces;
 using AISServer.Components.Io;
 using AISServer.Components.Io.Enums;
@@ -43,32 +44,58 @@ internal class Program
 
         // Profibus IO mappings
         var ioMappings = new ProfibusIoMappings();
+        
+        IIoController currentIoController = null;
 
-        // Initialize IoController
-        IIoController ioController = new IoController(1, ioMappings, logger);
-
-        // Initialize Profibus card
-        if (!ioController.Initialize(1))
-        {
-            Console.WriteLine("Initialization failed.");
-            return;
-        }
 
         bool exit = false;
         while (!exit)
         {
-            Console.WriteLine("Enter command (on/off/exit):");
+            Console.WriteLine("Enter command (io1, io2, get, on, off, exit):");
             string command = Console.ReadLine()?.ToLower();
 
             switch (command)
             {
+                case "io1":
+                    Console.WriteLine("Initializing IoController");
+                    currentIoController = new IoController(ioMappings, logger);
+                    currentIoController.Initialize();
+                    Console.WriteLine("IoController initialized!");
+                    break;
+                case "io2":
+                    Console.WriteLine("Initializing IoController2");
+                    currentIoController = new IoController2(ioMappings, logger);
+                    currentIoController.Initialize();
+                    Console.WriteLine("IoController2 initialized!");
+                    break;
+                case "get":
+                    if (currentIoController is null)
+                    {
+                        Console.WriteLine("Current IO controller is not set. Use 'io1' or 'io2' to set the current IO controller.");
+                        break;
+                    }
+                    
+                    // Get the status of the imaging light
+                    bool imagingLightStatus = currentIoController.GetBit(ProfibusOutputId.IMAGE_LIGHT_ON);
+                    Console.WriteLine($"Imaging light status: {imagingLightStatus}");
+                    break;
                 case "on":
+                    if (currentIoController is null)
+                    {
+                        Console.WriteLine("Current IO controller is not set. Use 'io1' or 'io2' to set the current IO controller.");
+                        break;
+                    }
                     // Turn on the imaging light
-                    ioController.SetBit(ProfibusOutputId.IMAGE_LIGHT_ON, true);
+                    currentIoController.SetBit(ProfibusOutputId.IMAGE_LIGHT_ON, true);
                     break;
                 case "off":
+                    if (currentIoController is null)
+                    {
+                        Console.WriteLine("Current IO controller is not set. Use 'io1' or 'io2' to set the current IO controller.");
+                        break;
+                    }
                     // Turn off the imaging light
-                    ioController.SetBit(ProfibusOutputId.IMAGE_LIGHT_ON, false);
+                    currentIoController.SetBit(ProfibusOutputId.IMAGE_LIGHT_ON, false);
                     break;
                 case "exit":
                     exit = true;
@@ -78,14 +105,11 @@ internal class Program
                     continue;
             }
 
-            // Get the status of the imaging light
-            bool imagingLightStatus = false;
-            ioController.GetBit(ProfibusOutputId.IMAGE_LIGHT_ON, ref imagingLightStatus);
-            Console.WriteLine($"Imaging light status: {imagingLightStatus}");
+            
         }
 
         // Shutdown Profibus card
-        ioController.Shutdown(1);
+        currentIoController?.Shutdown(1);
     }
 
     private static void ParseCommand(string? lastMessage)
