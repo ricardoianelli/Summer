@@ -23,6 +23,13 @@
       <None Update="appIO64.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="mpi64vc100.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MonsantoAutomation.Applicom" Version="3.1.0.3" />
     </ItemGroup>
 
 </Project>

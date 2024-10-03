@@ -1,14 +1,16 @@
-﻿using AISServer.Components.Hardware.Profibus.Enums;
-using AISServer.Components.Io.Enums;
+﻿using AISServer.Components.Io.Enums;
 
 namespace AISServer.Components.Io.Interfaces
 {
     public interface IIoController
     {
-        ProfibusErrorStatusId Initialize();
-        bool Shutdown(ushort cardId);
+        void Initialize();
+        void Shutdown();
 
-        bool GetBit(Enum id);
+        List<ushort> GetNodes();
+
+        bool GetBit(ProfibusInputId inputId);
+        bool GetBit(ProfibusOutputId outputId);
         bool SetBit(ProfibusOutputId outputId, bool bitValue);
 
         bool GetByte(ushort deviceId, ushort byteOffset, ref byte byteValue);
