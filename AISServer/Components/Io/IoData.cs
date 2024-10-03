@@ -4,4 +4,5 @@ public class IoData
 {
     public ushort Node;
     public ushort Offset;
+    public bool IsAnalog;
 }

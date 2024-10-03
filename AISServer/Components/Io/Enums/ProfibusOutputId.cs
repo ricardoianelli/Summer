@@ -1,10 +1,62 @@
-﻿namespace AISServer.Components.Io.Enums;
-
-public enum ProfibusOutputId
+﻿namespace AISServer.Components.Io.Enums
 {
-    SINGULATION_VACUUM_ON = 1,
-    INFEED_CONVEYOR = 2,
-    INFEED_CONVEYOR_REVERSE = 3,
-    IMAGE_LIGHT_ON = 8,
-    // Add other outputs here as needed
+    public enum ProfibusOutputId
+    {
+        // SYSTEM BLOCK
+        SINGULATION_VACUUM_ON = 0,
+        INFEED_CONVEYOR = 1,
+        INFEED_CONVEYOR_REVERSE = 2,
+        IMAGE_LIGHT_ON = 3,
+        RECEIVE_TRAY = 4,
+        SEND_TRAY = 5,
+        USER_DOOR_LOCK = 6,
+        FRONT_DOOR_LOCK = 7,
+        REAR_DOOR_LOCK = 8,
+
+        // SAFETY BLOCK
+        USER_DOOR_REQUEST_LIGHT = 9,
+        FRONT_DOOR_REQUEST_LIGHT = 10,
+        REAR_DOOR_REQUEST_LIGHT = 11,
+
+        // ABOVE DECK
+        VSTACK_OPLATE_MOVER_IMAGING = 12,
+        VSTACK_OPLATE_MOVER_VSTACK = 13,
+        IMAGING_CLAMPED = 14,
+        DELIDDER_PICKUP = 15,
+        DELIDDER_VACUUM = 16,
+        FLIPPER_OPLATE_MOVER_FLIPPER = 17,
+        STACKER_AIR = 18,
+        FLIPPER_COVER_OPEN = 19,
+        FLIPPER_CLAMPED = 20,
+        FLIPPER_LOAD = 21,
+        FLIPPER_DUMP = 22,
+        DROP_TUBES_DOWN = 23,
+        ABOVE_REVOLVER_GATE_OPEN = 24,
+        DIVERTER_RIGHT_GATE_OPEN = 25,
+        DIVERTER_LEFT_GATE_OPEN = 26,
+
+        // BELOW DECK
+        BULK_LEFT_GREEN_LIGHT = 27,
+        BULK_LEFT_YELLOW_LIGHT = 28,
+        BULK_LEFT_RED_LIGHT = 29,
+        BULK_RIGHT_GREEN_LIGHT = 30,
+        BULK_RIGHT_YELLOW_LIGHT = 31,
+        BULK_RIGHT_RED_LIGHT = 32,
+        MIGRATION_EXAIR_ON = 33,
+        REVOLVER_DUMP_EXAIR_ON = 34,
+        DIVERTER_EXAIR_ON = 35,
+        BULK_LEFT_DOOR_LOCK = 36,
+        BULK_LEFT_GATE_OPEN = 37,
+        BULK_RIGHT_DOOR_LOCK = 38,
+        BULK_RIGHT_GATE_OPEN = 39,
+        SHUTTLE_GATE_1_OPEN = 40,
+        SHUTTLE_GATE_2_OPEN = 41,
+        SHUTTLE_GATE_3_OPEN = 42,
+        SHUTTLE_GATE_4_OPEN = 43,
+        SHUTTLE_GATE_5_OPEN = 44,
+        SHUTTLE_GATE_6_OPEN = 45,
+
+        // Analog Output
+        SINGULATION_VACUUM_SPEED = 46
+    }
 }

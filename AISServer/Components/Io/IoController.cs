@@ -1,6 +1,7 @@
 ﻿using AISServer.Components.Io.Enums;
 using AISServer.Components.Io.Interfaces;
 using MonsantoAutomation.Devices.Applicom;
+using MonsantoAutomation.Devices.Applicom.Enums;
 
 namespace AISServer.Components.Io;
 
@@ -37,7 +38,9 @@ public class IoController : IIoController
         var bitValue = false;
         var ioData = IoMappings.InputMappings[inputId];
         var error = _profibus.GetInputBit(ioData.Node, ioData.Offset, ref bitValue);
-        Console.WriteLine($"Get bit - InputId: {inputId}, bitValue: {bitValue}, error: {_profibus.GetErrorDescription(error)}");
+        var errorString = error != ProfibusErrorStatusId.NONE ? _profibus.GetErrorDescription(error) : string.Empty;
+
+        Console.WriteLine($"Get bit - InputId: {inputId}, bitValue: {bitValue}" + " " + errorString);
         return bitValue;
     }
     
@@ -46,7 +49,8 @@ public class IoController : IIoController
         var bitValue = false;
         var ioData = IoMappings.OutputMappings[outputId];
         var error = _profibus.GetInputBit(ioData.Node, ioData.Offset, ref bitValue);
-        Console.WriteLine($"Get bit - OutputId: {outputId}, bitValue: {bitValue}, error: {_profibus.GetErrorDescription(error)}");
+        var errorString = error != ProfibusErrorStatusId.NONE ? _profibus.GetErrorDescription(error) : string.Empty;
+        Console.WriteLine($"Get bit - OutputId: {outputId}, bitValue: {bitValue}" + " " + errorString);
         return bitValue;
     }
 
